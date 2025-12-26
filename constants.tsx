@@ -15,7 +15,12 @@ import {
   Coffee, 
   ParkingCircle,
   CloudRain,
-  Compass
+  Compass,
+  Wind,
+  History,
+  Leaf,
+  Globe,
+  Sprout
 } from 'lucide-react';
 import { Property, ThemeColors } from './types';
 
@@ -34,6 +39,52 @@ export const COLORS_VIEW: ThemeColors = {
   textDark: '#1A1A1A',
   textLight: '#6B7A6F'
 };
+
+export interface DetailItem {
+  title: string;
+  description: string;
+  image: string;
+  icon: string;
+}
+
+export const WAYANAD_EXPERIENCES: DetailItem[] = [
+  {
+    title: "Neolithic Echoes",
+    description: "The Edakkal Caves, a mere 15-minute drive, hold the secrets of civilizations from 6,000 BCE. Our concierge arranges private morning treks to beat the mist.",
+    image: "https://images.unsplash.com/photo-1593693397690-362ae9666ec3?auto=format&fit=crop&q=80&w=1200",
+    icon: "History"
+  },
+  {
+    title: "The Earth Dam",
+    description: "Banasura Sagar, India's largest earth dam, offers a surreal landscape of floating islands. Perfect for a curated sunset picnic organized by our staff.",
+    image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=1200",
+    icon: "Wind"
+  },
+  {
+    title: "Botanical Trails",
+    description: "Our in-house naturalists guide you through the coffee and pepper plantations, explaining the delicate balance of shade-grown cultivation.",
+    image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=1200",
+    icon: "Leaf"
+  }
+];
+
+export const SUSTAINABILITY_PILLARS = [
+  {
+    title: "Shade-Grown Legacy",
+    desc: "Unlike sun-drenched monocultures, our coffee thrives under the canopy of native hardwood trees, preserving the habitat of the Malabar Grey Hornbill.",
+    icon: "Leaf"
+  },
+  {
+    title: "Water Neutrality",
+    desc: "We harvest 100% of our monsoon rains to irrigate our spice gardens during the dryer months, ensuring we never draw from local community springs.",
+    icon: "Wind"
+  },
+  {
+    title: "Community First",
+    desc: "90% of our staff hail from the surrounding Vaduvanchal villages. We invest in local schools and traditional craftsmanship to keep Wayanad's soul alive.",
+    icon: "Globe"
+  }
+];
 
 export const PROPERTY_VILLA: Property = {
   name: "The Villa",
@@ -55,6 +106,8 @@ export const PROPERTY_VILLA: Property = {
     "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&q=80&w=1200",
     "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&q=80&w=1200",
     "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1200",
+    "https://images.unsplash.com/photo-1590490359683-658d3d23f972?auto=format&fit=crop&q=80&w=1200",
+    "https://images.unsplash.com/photo-1560185127-6ed189bf02f4?auto=format&fit=crop&q=80&w=1200",
   ],
   philosophy: {
     title: "Curated Stillness",
@@ -83,6 +136,8 @@ export const PROPERTY_VIEW: Property = {
     "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=1200",
     "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=1200",
     "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=1200",
+    "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=1200",
+    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1200",
   ],
   philosophy: {
     title: "The Valley Rhythm",
@@ -117,6 +172,11 @@ export const getIcon = (iconName: string, color: string) => {
     case 'ParkingCircle': return <ParkingCircle {...props} />;
     case 'CloudRain': return <CloudRain {...props} />;
     case 'Compass': return <Compass {...props} />;
+    case 'History': return <History {...props} />;
+    case 'Wind': return <Wind {...props} />;
+    case 'Leaf': return <Leaf {...props} />;
+    case 'Globe': return <Globe {...props} />;
+    case 'Sprout': return <Sprout {...props} />;
     default: return <CheckCircle {...props} />;
   }
 };
