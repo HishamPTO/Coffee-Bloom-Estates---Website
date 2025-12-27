@@ -207,6 +207,9 @@ const ContactPage: React.FC<{ currentTheme: any, currentProperty: Property }> = 
     window.open(`https://wa.me/918921142220?text=${encodeURIComponent(message)}`, '_blank');
   };
 
+  const inputClasses = "w-full bg-white text-black border-b border-gray-200 py-3 px-2 outline-none focus:border-black transition-all placeholder:text-gray-400 font-medium";
+  const labelClasses = "text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-2 block";
+
   return (
     <div className="pt-40 pb-32 px-6 lg:px-24 max-w-[1400px] mx-auto animate-in fade-in slide-in-from-bottom duration-700">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
@@ -270,21 +273,21 @@ const ContactPage: React.FC<{ currentTheme: any, currentProperty: Property }> = 
             <h4 className="text-[10px] uppercase tracking-widest font-bold mb-10 text-gray-400">General Inquiry Form</h4>
             <form className="space-y-10">
                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Full Name</label>
-                  <input type="text" className="w-full border-b border-gray-100 py-3 outline-none focus:border-black transition-colors" placeholder=" Julian Smith" />
+                  <label className={labelClasses}>Full Name</label>
+                  <input type="text" className={inputClasses} placeholder=" Julian Smith" />
                </div>
                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Subject</label>
-                  <select className="w-full border-b border-gray-100 py-3 outline-none focus:border-black transition-colors bg-transparent">
-                    <option>Stay Inquiry</option>
-                    <option>Wedding & Events</option>
-                    <option>Corporate Retreat</option>
-                    <option>Media & PR</option>
+                  <label className={labelClasses}>Subject</label>
+                  <select className={inputClasses}>
+                    <option className="text-black">Stay Inquiry</option>
+                    <option className="text-black">Wedding & Events</option>
+                    <option className="text-black">Corporate Retreat</option>
+                    <option className="text-black">Media & PR</option>
                   </select>
                </div>
                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Message</label>
-                  <textarea className="w-full border-b border-gray-100 py-3 outline-none focus:border-black transition-colors" rows={4} placeholder="How can we help?"></textarea>
+                  <label className={labelClasses}>Message</label>
+                  <textarea className={inputClasses} rows={4} placeholder="How can we help?"></textarea>
                </div>
                <button className="w-full py-6 text-[10px] uppercase tracking-[0.4em] font-bold text-white transition-all shadow-xl hover:brightness-110" style={{ backgroundColor: currentTheme.primary }}>
                  Send Inquiry
