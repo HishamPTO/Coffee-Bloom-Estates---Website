@@ -20,7 +20,8 @@ import {
   History,
   Leaf,
   Globe,
-  Sprout
+  Sprout,
+  MessageSquare
 } from 'lucide-react';
 import { Property, ThemeColors } from './types';
 
@@ -113,7 +114,9 @@ export const PROPERTY_VILLA: Property = {
     title: "Curated Stillness",
     quote: "Luxury is the absence of noise.",
     description: "The Villa is built on the philosophy of 'Essentialism.' We believe that true premium living comes from the removal of the unnecessary. In the heart of the coffee estate, we provide the luxury of space, the luxury of time, and the luxury of unhindered nature."
-  }
+  },
+  address: "Ooty Road, Near Sales Tax Check Post, Vaduvanchal, Wayanad, India, 673581",
+  mapLink: "https://maps.app.goo.gl/EDE6iTtVeQLoBqm38"
 };
 
 export const PROPERTY_VIEW: Property = {
@@ -143,7 +146,9 @@ export const PROPERTY_VIEW: Property = {
     title: "The Valley Rhythm",
     quote: "Nature does not hurry, yet everything is accomplished.",
     description: "At The View, our philosophy centers on 'Deep Connection.' We believe in a stay that doesn't just look at nature, but lives within it. By respecting the Vayal (valley) ecosystem, we offer a retreat that is humble in its footprint but majestic in its soul."
-  }
+  },
+  address: "Near Sreedhar Memorial Hospital, SH 29, Vattathuvayal, Vaduvanchal, Wayanad, India, 673581",
+  mapLink: "https://maps.app.goo.gl/Eb5EwnJ4EMmh8smA6"
 };
 
 export const CONTACT_INFO = {
@@ -177,6 +182,7 @@ export const getIcon = (iconName: string, color: string) => {
     case 'Leaf': return <Leaf {...props} />;
     case 'Globe': return <Globe {...props} />;
     case 'Sprout': return <Sprout {...props} />;
+    case 'WhatsApp': return <MessageSquare {...props} />;
     default: return <CheckCircle {...props} />;
   }
 };

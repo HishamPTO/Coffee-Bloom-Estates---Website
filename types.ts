@@ -22,6 +22,8 @@ export interface Property {
   heroImage: string;
   gallery: string[];
   philosophy: Philosophy;
+  address: string;
+  mapLink: string;
 }
 
 export interface ThemeColors {

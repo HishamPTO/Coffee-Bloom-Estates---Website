@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Instagram, Youtube, MapPin, Phone, Mail, ChevronRight, ChevronLeft, X, Quote, Trees, Bird, Globe } from 'lucide-react';
+import { ArrowRight, Instagram, Youtube, MapPin, Phone, Mail, ChevronRight, ChevronLeft, X, Quote, Trees, Bird, Globe, MessageCircle } from 'lucide-react';
 import Navbar, { PageID } from './components/Navbar';
 import BookingModal from './components/BookingModal';
 import { 
@@ -13,13 +13,13 @@ import {
   SUSTAINABILITY_PILLARS,
   getIcon
 } from './constants';
-import { SiteMode } from './types';
+import { SiteMode, Property } from './types';
 
 // --- Page Components ---
 
 const HomePage: React.FC<{ 
   mode: SiteMode, 
-  currentProperty: any, 
+  currentProperty: Property, 
   currentTheme: any, 
   setIsBookingOpen: (o: boolean) => void,
   setLightboxIndex: (i: number) => void,
@@ -124,8 +124,6 @@ const HomePage: React.FC<{
   </>
 );
 
-// ... (ExperiencePage, GalleryPage, SustainabilityPage, ContactPage components remain the same) ...
-
 const ExperiencePage: React.FC<{ currentTheme: any }> = ({ currentTheme }) => (
   <div className="pt-40 pb-32 px-6 lg:px-24 max-w-[1400px] mx-auto animate-in fade-in slide-in-from-bottom duration-700">
     <div className="mb-24 text-center max-w-2xl mx-auto">
@@ -152,7 +150,7 @@ const ExperiencePage: React.FC<{ currentTheme: any }> = ({ currentTheme }) => (
   </div>
 );
 
-const GalleryPage: React.FC<{ currentProperty: any, setLightboxIndex: (i: number) => void }> = ({ currentProperty, setLightboxIndex }) => (
+const GalleryPage: React.FC<{ currentProperty: Property, setLightboxIndex: (i: number) => void }> = ({ currentProperty, setLightboxIndex }) => (
   <div className="pt-40 pb-32 px-6 lg:px-24 max-w-[1400px] mx-auto animate-in fade-in slide-in-from-bottom duration-700">
     <div className="mb-20">
       <span className="text-[10px] uppercase tracking-[0.6em] text-gray-400 mb-4 block">Visual Story</span>
@@ -203,40 +201,100 @@ const SustainabilityPage: React.FC<{ currentTheme: any }> = ({ currentTheme }) =
   </div>
 );
 
-const ContactPage: React.FC<{ currentTheme: any }> = ({ currentTheme }) => (
-  <div className="pt-40 pb-32 px-6 lg:px-24 max-w-[1400px] mx-auto animate-in fade-in slide-in-from-bottom duration-700">
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
-       <div>
-         <span className="text-[10px] uppercase tracking-[0.6em] text-gray-400 mb-6 block">Concierge</span>
-         <h2 className="text-6xl font-serif mb-12">Let's craft your <span className="italic">Journey</span></h2>
-         <div className="space-y-12">
-            <div>
-               <h4 className="text-[10px] uppercase tracking-widest font-bold mb-4 opacity-40">Reach Us</h4>
-               <p className="text-xl font-light">{CONTACT_INFO.phone}</p>
-               <p className="text-xl font-light">{CONTACT_INFO.email}</p>
-            </div>
-            <div>
-               <h4 className="text-[10px] uppercase tracking-widest font-bold mb-4 opacity-40">Location</h4>
-               <p className="text-xl font-light leading-relaxed">{CONTACT_INFO.address}</p>
-            </div>
+const ContactPage: React.FC<{ currentTheme: any, currentProperty: Property }> = ({ currentTheme, currentProperty }) => {
+  const handleWhatsAppChat = () => {
+    const message = `Hi Coffee Bloom Estates, I'm interested in learning more about ${currentProperty.name}.`;
+    window.open(`https://wa.me/918921142220?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
+  return (
+    <div className="pt-40 pb-32 px-6 lg:px-24 max-w-[1400px] mx-auto animate-in fade-in slide-in-from-bottom duration-700">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
+         <div>
+           <span className="text-[10px] uppercase tracking-[0.6em] text-gray-400 mb-6 block">Concierge</span>
+           <h2 className="text-6xl font-serif mb-12 leading-tight">Connect with <br/><span className="italic">{currentProperty.name}</span></h2>
+           
+           <div className="space-y-16">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                 <div>
+                    <h4 className="text-[10px] uppercase tracking-widest font-bold mb-6 opacity-40">Direct Lines</h4>
+                    <div className="space-y-4">
+                      <a href={`tel:${CONTACT_INFO.phone}`} className="flex items-center space-x-4 group">
+                        <div className="p-2 border border-black/5 rounded-full group-hover:bg-black group-hover:text-white transition-all"><Phone size={14}/></div>
+                        <span className="text-lg font-light">{CONTACT_INFO.phone}</span>
+                      </a>
+                      <a href={`mailto:${CONTACT_INFO.email}`} className="flex items-center space-x-4 group">
+                        <div className="p-2 border border-black/5 rounded-full group-hover:bg-black group-hover:text-white transition-all"><Mail size={14}/></div>
+                        <span className="text-lg font-light">{CONTACT_INFO.email}</span>
+                      </a>
+                    </div>
+                 </div>
+                 <div>
+                    <h4 className="text-[10px] uppercase tracking-widest font-bold mb-6 opacity-40">Instant Chat</h4>
+                    <button 
+                      onClick={handleWhatsAppChat}
+                      className="flex items-center space-x-4 group bg-black/5 hover:bg-black hover:text-white p-4 rounded-lg transition-all w-full"
+                    >
+                      <MessageCircle size={20} className="text-green-600 group-hover:text-white"/>
+                      <div className="text-left">
+                        <p className="text-[10px] uppercase tracking-widest font-bold">WhatsApp</p>
+                        <p className="text-sm font-light opacity-60">Chat with Concierge</p>
+                      </div>
+                    </button>
+                 </div>
+              </div>
+
+              <div className="pt-12 border-t border-gray-100">
+                 <h4 className="text-[10px] uppercase tracking-widest font-bold mb-6 opacity-40">Location & Directions</h4>
+                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+                    <div className="max-w-xs">
+                      <p className="text-lg font-serif italic mb-2">{currentProperty.name}</p>
+                      <p className="text-sm font-light leading-relaxed text-gray-500">{currentProperty.address}</p>
+                    </div>
+                    <a 
+                      href={currentProperty.mapLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center space-x-4 text-[10px] uppercase tracking-[0.3em] font-bold border-b-2 pb-1 hover:border-black transition-all"
+                      style={{ borderBottomColor: currentTheme.primary }}
+                    >
+                      <MapPin size={14} />
+                      <span>Open Google Maps</span>
+                    </a>
+                 </div>
+              </div>
+           </div>
          </div>
-       </div>
-       <div className="bg-white p-12 shadow-2xl border-t-8" style={{ borderColor: currentTheme.primary }}>
-          <form className="space-y-10">
-             <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Full Name</label>
-                <input type="text" className="w-full border-b border-gray-100 py-3 outline-none focus:border-black transition-colors" placeholder=" Julian Smith" />
-             </div>
-             <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Message</label>
-                <textarea className="w-full border-b border-gray-100 py-3 outline-none focus:border-black transition-colors" rows={4} placeholder="How can we help?"></textarea>
-             </div>
-             <button className="w-full py-6 bg-black text-white text-[10px] uppercase tracking-[0.4em] font-bold">Send Inquiry</button>
-          </form>
-       </div>
+
+         <div className="bg-white p-12 shadow-2xl border-t-8" style={{ borderColor: currentTheme.primary }}>
+            <h4 className="text-[10px] uppercase tracking-widest font-bold mb-10 text-gray-400">General Inquiry Form</h4>
+            <form className="space-y-10">
+               <div className="space-y-2">
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Full Name</label>
+                  <input type="text" className="w-full border-b border-gray-100 py-3 outline-none focus:border-black transition-colors" placeholder=" Julian Smith" />
+               </div>
+               <div className="space-y-2">
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Subject</label>
+                  <select className="w-full border-b border-gray-100 py-3 outline-none focus:border-black transition-colors bg-transparent">
+                    <option>Stay Inquiry</option>
+                    <option>Wedding & Events</option>
+                    <option>Corporate Retreat</option>
+                    <option>Media & PR</option>
+                  </select>
+               </div>
+               <div className="space-y-2">
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Message</label>
+                  <textarea className="w-full border-b border-gray-100 py-3 outline-none focus:border-black transition-colors" rows={4} placeholder="How can we help?"></textarea>
+               </div>
+               <button className="w-full py-6 text-[10px] uppercase tracking-[0.4em] font-bold text-white transition-all shadow-xl hover:brightness-110" style={{ backgroundColor: currentTheme.primary }}>
+                 Send Inquiry
+               </button>
+            </form>
+         </div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // --- Main App ---
 
@@ -306,7 +364,10 @@ const App: React.FC = () => {
                         <button onClick={() => handleModeSwitch('VIEW')} className={`text-2xl font-serif italic transition-all ${mode === 'VIEW' ? 'text-black underline' : 'opacity-30 hover:opacity-100'}`}>The View</button>
                      </div>
                   </div>
-                  <div className="flex space-x-6"><Instagram size={20}/><Youtube size={20}/></div>
+                  <div className="flex space-x-6">
+                    <a href="#" className="hover:opacity-40 transition-opacity"><Instagram size={20}/></a>
+                    <a href="#" className="hover:opacity-40 transition-opacity"><Youtube size={20}/></a>
+                  </div>
                </div>
             </div>
           </>
@@ -314,7 +375,7 @@ const App: React.FC = () => {
         {activePage === 'experience' && <ExperiencePage currentTheme={currentTheme} />}
         {activePage === 'gallery' && <GalleryPage currentProperty={currentProperty} setLightboxIndex={setLightboxIndex} />}
         {activePage === 'sustainability' && <SustainabilityPage currentTheme={currentTheme} />}
-        {activePage === 'contact' && <ContactPage currentTheme={currentTheme} />}
+        {activePage === 'contact' && <ContactPage currentTheme={currentTheme} currentProperty={currentProperty} />}
       </main>
 
       {activePage !== 'home' && (
