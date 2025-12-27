@@ -22,8 +22,9 @@ const HomePage: React.FC<{
   currentProperty: any, 
   currentTheme: any, 
   setIsBookingOpen: (o: boolean) => void,
-  setLightboxIndex: (i: number) => void
-}> = ({ mode, currentProperty, currentTheme, setIsBookingOpen, setLightboxIndex }) => (
+  setLightboxIndex: (i: number) => void,
+  handleModeSwitch: (mode: SiteMode) => void
+}> = ({ mode, currentProperty, currentTheme, setIsBookingOpen, setLightboxIndex, handleModeSwitch }) => (
   <>
     <header className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
@@ -43,6 +44,22 @@ const HomePage: React.FC<{
         <p className="text-sm md:text-lg max-w-xl mx-auto font-light tracking-wide opacity-80 animate-in fade-in slide-in-from-bottom duration-1000 delay-500">
           {currentProperty.tagline}
         </p>
+      </div>
+
+      {/* Floating Property Selector in Hero */}
+      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 hidden md:flex items-center bg-white/5 backdrop-blur-md border border-white/20 rounded-full p-2 animate-in fade-in slide-in-from-bottom duration-1000 delay-700">
+        <button 
+          onClick={() => handleModeSwitch('VILLA')}
+          className={`px-10 py-3 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold transition-all ${mode === 'VILLA' ? 'bg-white text-black shadow-lg' : 'text-white hover:text-white/70'}`}
+        >
+          The Villa
+        </button>
+        <button 
+          onClick={() => handleModeSwitch('VIEW')}
+          className={`px-10 py-3 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold transition-all ${mode === 'VIEW' ? 'bg-white text-black shadow-lg' : 'text-white hover:text-white/70'}`}
+        >
+          The View
+        </button>
       </div>
     </header>
 
@@ -106,6 +123,8 @@ const HomePage: React.FC<{
     </section>
   </>
 );
+
+// ... (ExperiencePage, GalleryPage, SustainabilityPage, ContactPage components remain the same) ...
 
 const ExperiencePage: React.FC<{ currentTheme: any }> = ({ currentTheme }) => (
   <div className="pt-40 pb-32 px-6 lg:px-24 max-w-[1400px] mx-auto animate-in fade-in slide-in-from-bottom duration-700">
@@ -263,6 +282,7 @@ const App: React.FC = () => {
         activePage={activePage}
         onNavigate={handleNavigate}
         onBookClick={() => setIsBookingOpen(true)} 
+        onModeSwitch={handleModeSwitch}
         primaryColor={currentTheme.primary} 
       />
 
@@ -275,14 +295,15 @@ const App: React.FC = () => {
               currentTheme={currentTheme} 
               setIsBookingOpen={setIsBookingOpen}
               setLightboxIndex={setLightboxIndex}
+              handleModeSwitch={handleModeSwitch}
             />
             <div className="py-24 px-8 border-t border-gray-100 bg-white/50">
                <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
                   <div>
-                     <span className="text-[10px] uppercase tracking-[0.4em] text-gray-400 mb-2 block">Dwellings</span>
+                     <span className="text-[10px] uppercase tracking-[0.4em] text-gray-400 mb-2 block">Our Dwellings</span>
                      <div className="flex space-x-8">
-                        <button onClick={() => handleModeSwitch('VILLA')} className={`text-2xl font-serif italic transition-all ${mode === 'VILLA' ? 'text-black underline' : 'opacity-30'}`}>The Villa</button>
-                        <button onClick={() => handleModeSwitch('VIEW')} className={`text-2xl font-serif italic transition-all ${mode === 'VIEW' ? 'text-black underline' : 'opacity-30'}`}>The View</button>
+                        <button onClick={() => handleModeSwitch('VILLA')} className={`text-2xl font-serif italic transition-all ${mode === 'VILLA' ? 'text-black underline' : 'opacity-30 hover:opacity-100'}`}>The Villa</button>
+                        <button onClick={() => handleModeSwitch('VIEW')} className={`text-2xl font-serif italic transition-all ${mode === 'VIEW' ? 'text-black underline' : 'opacity-30 hover:opacity-100'}`}>The View</button>
                      </div>
                   </div>
                   <div className="flex space-x-6"><Instagram size={20}/><Youtube size={20}/></div>

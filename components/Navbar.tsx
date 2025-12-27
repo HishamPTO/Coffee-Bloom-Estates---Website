@@ -11,9 +11,10 @@ interface NavbarProps {
   primaryColor: string;
   activePage: PageID;
   onNavigate: (page: PageID) => void;
+  onModeSwitch: (mode: SiteMode) => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ mode, onBookClick, primaryColor, activePage, onNavigate }) => {
+const Navbar: React.FC<NavbarProps> = ({ mode, onBookClick, primaryColor, activePage, onNavigate, onModeSwitch }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -76,6 +77,22 @@ const Navbar: React.FC<NavbarProps> = ({ mode, onBookClick, primaryColor, active
           </div>
 
           <div className="flex items-center space-x-8">
+            <div className={`hidden lg:flex items-center space-x-4 border-x px-8 transition-colors ${isDarkText ? 'border-black/10' : 'border-white/10'}`}>
+              <button 
+                onClick={() => onModeSwitch('VILLA')}
+                className={`text-[9px] uppercase tracking-[0.3em] transition-all hover:opacity-100 ${mode === 'VILLA' ? 'opacity-100 font-bold' : 'opacity-40'} ${isDarkText ? 'text-black' : 'text-white'}`}
+              >
+                The Villa
+              </button>
+              <span className={`text-[9px] opacity-20 ${isDarkText ? 'text-black' : 'text-white'}`}>/</span>
+              <button 
+                onClick={() => onModeSwitch('VIEW')}
+                className={`text-[9px] uppercase tracking-[0.3em] transition-all hover:opacity-100 ${mode === 'VIEW' ? 'opacity-100 font-bold' : 'opacity-40'} ${isDarkText ? 'text-black' : 'text-white'}`}
+              >
+                The View
+              </button>
+            </div>
+
             <button
               onClick={onBookClick}
               className={`hidden lg:block text-[10px] uppercase tracking-[0.4em] font-bold border-b transition-all pb-1 ${isDarkText ? 'text-black border-black/20 hover:border-black' : 'text-white border-white/20 hover:border-white'}`}
@@ -107,6 +124,20 @@ const Navbar: React.FC<NavbarProps> = ({ mode, onBookClick, primaryColor, active
         </button>
         
         <div className="flex flex-col space-y-12 text-center text-white">
+          <div className="flex justify-center space-x-8 mb-4">
+             <button 
+                onClick={() => { onModeSwitch('VILLA'); setIsMobileMenuOpen(false); }}
+                className={`text-[11px] uppercase tracking-[0.4em] border px-4 py-2 ${mode === 'VILLA' ? 'bg-white text-black' : 'border-white/20 text-white/60'}`}
+             >
+               The Villa
+             </button>
+             <button 
+                onClick={() => { onModeSwitch('VIEW'); setIsMobileMenuOpen(false); }}
+                className={`text-[11px] uppercase tracking-[0.4em] border px-4 py-2 ${mode === 'VIEW' ? 'bg-white text-black' : 'border-white/20 text-white/60'}`}
+             >
+               The View
+             </button>
+          </div>
           {navLinks.map((link) => (
             <button 
               key={link.id}
