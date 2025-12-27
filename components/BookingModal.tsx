@@ -13,7 +13,8 @@ interface BookingModalProps {
 const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, mode, primaryColor }) => {
   const [formData, setFormData] = useState({
     name: '',
-    date: '',
+    checkin: '',
+    checkout: '',
     guests: '2',
     phone: '',
     property: mode as string,
@@ -39,7 +40,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, mode, prim
 *Contact Number:* ${formData.phone}
 
 *Property:* ${propertyLabel}
-*Check-in Date:* ${formData.date}
+*Check-in:* ${formData.checkin}
+*Check-out:* ${formData.checkout}
 *Total Guests:* ${formData.guests}
 ---------------------------
 Hi Coffee Bloom Estates, I would like to check availability and rates for the above details. Looking forward to hearing from you!`;
@@ -59,7 +61,7 @@ Hi Coffee Bloom Estates, I would like to check availability and rates for the ab
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative bg-white w-full max-w-md p-8 md:p-12 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] animate-in fade-in zoom-in duration-300">
+      <div className="relative bg-white w-full max-w-lg p-8 md:p-12 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] animate-in fade-in zoom-in duration-300 overflow-y-auto max-h-[90vh]">
         <button 
           onClick={onClose}
           className="absolute top-6 right-6 text-gray-400 hover:text-black transition-colors"
@@ -74,7 +76,7 @@ Hi Coffee Bloom Estates, I would like to check availability and rates for the ab
           </p>
         </header>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <label className={labelClasses}>Property Selection</label>
             <div className="flex bg-gray-50 p-1 rounded-sm">
@@ -107,17 +109,30 @@ Hi Coffee Bloom Estates, I would like to check availability and rates for the ab
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-1">
-              <label className={labelClasses}>Check-in</label>
+              <label className={labelClasses}>Check-in Date</label>
               <input 
                 required
                 type="date"
                 className={`${inputClasses} min-h-[48px]`}
-                value={formData.date}
-                onChange={(e) => setFormData({...formData, date: e.target.value})}
+                value={formData.checkin}
+                onChange={(e) => setFormData({...formData, checkin: e.target.value})}
               />
             </div>
+            <div className="space-y-1">
+              <label className={labelClasses}>Check-out Date</label>
+              <input 
+                required
+                type="date"
+                className={`${inputClasses} min-h-[48px]`}
+                value={formData.checkout}
+                onChange={(e) => setFormData({...formData, checkout: e.target.value})}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-1">
               <label className={labelClasses}>Total Guests</label>
               <div className="relative">
@@ -133,18 +148,17 @@ Hi Coffee Bloom Estates, I would like to check availability and rates for the ab
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="space-y-1">
-            <label className={labelClasses}>WhatsApp Contact</label>
-            <input 
-              required
-              type="tel"
-              placeholder="+91 89211 42220"
-              className={inputClasses}
-              value={formData.phone}
-              onChange={(e) => setFormData({...formData, phone: e.target.value})}
-            />
+            <div className="space-y-1">
+              <label className={labelClasses}>WhatsApp Contact</label>
+              <input 
+                required
+                type="tel"
+                placeholder="+91 89211 42220"
+                className={inputClasses}
+                value={formData.phone}
+                onChange={(e) => setFormData({...formData, phone: e.target.value})}
+              />
+            </div>
           </div>
 
           <button 
