@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect } from 'react';
-import { ArrowRight, Instagram, Youtube, MapPin, Phone, Mail, ChevronRight, ChevronLeft, X, Quote, Trees, Bird, Globe, MessageCircle } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ArrowRight, Instagram, Youtube, MapPin, Phone, Mail, ChevronRight, X, MessageCircle, Home, Heart, Maximize } from 'lucide-react';
 import Navbar, { PageID } from './components/Navbar';
 import BookingModal from './components/BookingModal';
 import { 
@@ -22,127 +22,263 @@ const HomePage: React.FC<{
   currentProperty: Property, 
   currentTheme: any, 
   setIsBookingOpen: (o: boolean) => void,
-  setLightboxIndex: (i: number) => void,
   handleModeSwitch: (mode: SiteMode) => void
-}> = ({ mode, currentProperty, currentTheme, setIsBookingOpen, setLightboxIndex, handleModeSwitch }) => (
-  <>
-    <header className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 z-0">
-        <img 
-          src={currentProperty.heroImage} 
-          className="w-full h-full object-cover scale-105 transition-transform duration-[2s] ease-out"
-          style={{ filter: 'brightness(0.6)' }}
-        />
-      </div>
-      <div className="relative z-10 text-center text-white px-6">
-        <span className="text-[10px] md:text-xs uppercase tracking-[0.8em] font-light mb-6 block animate-in fade-in slide-in-from-bottom duration-1000">
-          {currentProperty.location}
-        </span>
-        <h1 className="text-6xl md:text-8xl lg:text-[9rem] font-serif font-light mb-8 leading-none animate-in fade-in slide-in-from-bottom duration-1000 delay-200">
-          {currentProperty.name.split(' ')[1]}
-        </h1>
-        <p className="text-sm md:text-lg max-w-xl mx-auto font-light tracking-wide opacity-80 animate-in fade-in slide-in-from-bottom duration-1000 delay-500">
-          {currentProperty.tagline}
-        </p>
-      </div>
+}> = ({ mode, currentProperty, currentTheme, setIsBookingOpen, handleModeSwitch }) => {
+  const detailsRef = useRef<HTMLDivElement>(null);
 
-      {/* Floating Property Selector in Hero */}
-      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 hidden md:flex items-center bg-white/5 backdrop-blur-md border border-white/20 rounded-full p-2 animate-in fade-in slide-in-from-bottom duration-1000 delay-700">
-        <button 
-          onClick={() => handleModeSwitch('VILLA')}
-          className={`px-10 py-3 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold transition-all ${mode === 'VILLA' ? 'bg-white text-black shadow-lg' : 'text-white hover:text-white/70'}`}
-        >
-          The Villa
-        </button>
-        <button 
-          onClick={() => handleModeSwitch('VIEW')}
-          className={`px-10 py-3 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold transition-all ${mode === 'VIEW' ? 'bg-white text-black shadow-lg' : 'text-white hover:text-white/70'}`}
-        >
-          The View
-        </button>
-      </div>
-    </header>
+  const scrollToDetails = () => {
+    detailsRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
-    <section className="py-32 px-6 lg:px-24 reveal active">
-      <div className="max-w-[1400px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
-          <div className="lg:col-span-5">
-            <span className="text-[10px] uppercase tracking-[0.5em] font-medium mb-6 block text-gray-400">01. Architecture</span>
-            <h2 className="text-5xl lg:text-7xl font-serif mb-12 leading-tight">
-              Refined <br />
-              <span className="italic">Solitude</span>
-            </h2>
-            <p className="text-lg leading-relaxed font-light text-gray-600 mb-12">
-              {currentProperty.longDesc}
+  return (
+    <>
+      <header className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src={currentProperty.heroImage} 
+            className="w-full h-full object-cover scale-100 transition-transform duration-[3s] ease-out"
+            style={{ filter: 'brightness(0.7)' }}
+          />
+        </div>
+        <div className="relative z-10 text-center text-white px-6">
+          <span className="text-[10px] md:text-xs uppercase tracking-[1em] font-light mb-8 block animate-in fade-in slide-in-from-bottom duration-1000">
+            {currentProperty.location}
+          </span>
+          <h1 className="text-7xl md:text-9xl font-serif font-light mb-12 leading-none animate-in fade-in slide-in-from-bottom duration-1000 delay-200">
+            {currentProperty.name.split(' ')[1]}
+          </h1>
+          <div className="flex items-center justify-center space-x-12 animate-in fade-in duration-1000 delay-500">
+            <div className="w-12 h-[1px] bg-white/40" />
+            <p className="text-[10px] uppercase tracking-[0.5em] font-medium opacity-80">
+               Est. 2025
             </p>
-            <div className="space-y-10 border-t border-gray-100 pt-10">
-              <div className="grid grid-cols-2 gap-8">
-                {currentProperty.amenities.slice(0, 4).map((item: any) => (
-                  <div key={item.label} className="flex flex-col space-y-3">
-                    <div className="opacity-40">{getIcon(item.icon, currentTheme.primary)}</div>
-                    <span className="text-[10px] uppercase tracking-widest font-semibold">{item.label}</span>
-                  </div>
-                ))}
+            <div className="w-12 h-[1px] bg-white/40" />
+          </div>
+        </div>
+
+        {/* Minimal Mode Switcher */}
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex space-x-16 items-center">
+          <button 
+            onClick={() => handleModeSwitch('VILLA')}
+            className={`text-[9px] uppercase tracking-[0.6em] transition-all pb-2 ${mode === 'VILLA' ? 'text-white border-b border-white' : 'text-white/40 hover:text-white'}`}
+          >
+            Villa
+          </button>
+          <button 
+            onClick={() => handleModeSwitch('VIEW')}
+            className={`text-[9px] uppercase tracking-[0.6em] transition-all pb-2 ${mode === 'VIEW' ? 'text-white border-b border-white' : 'text-white/40 hover:text-white'}`}
+          >
+            View
+          </button>
+        </div>
+      </header>
+
+      {/* The Architectural Signature */}
+      <section className="py-48 px-6 lg:px-24 bg-white relative overflow-hidden" ref={detailsRef}>
+        <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-24 items-center">
+          <div className="lg:col-span-5 relative z-10">
+            <span className="text-[9px] uppercase tracking-[0.8em] text-gray-400 mb-8 block">01 / Signature</span>
+            <h2 className="text-6xl md:text-8xl font-serif mb-12 leading-tight">A Sanctuary <br/>of <span className="italic">Stillness</span></h2>
+            <div className="space-y-8 mb-16">
+               <p className="text-xl leading-relaxed font-light text-gray-500 italic">
+                 "Luxury is the absence of noise."
+               </p>
+               <p className="text-lg leading-loose font-light text-gray-600">
+                 {currentProperty.longDesc}
+               </p>
+            </div>
+            <div className="flex items-end justify-between">
+              <div>
+                 <p className="text-gray-300 text-[10px] uppercase tracking-widest mb-1">Starting from</p>
+                 <p className="text-4xl font-serif">₹{currentProperty.price}</p>
               </div>
               <button 
                 onClick={() => setIsBookingOpen(true)}
-                className="group flex items-center space-x-6 text-[10px] uppercase tracking-[0.4em] font-bold mt-8"
-                style={{ color: currentTheme.primary }}
+                className="group flex items-center space-x-6 text-[10px] uppercase tracking-[0.4em] font-bold"
               >
-                <span>Reserve Experience</span>
-                <div className="w-12 h-[1px] bg-current transition-all group-hover:w-20" />
+                <span>Check Availability</span>
+                <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
               </button>
             </div>
           </div>
-          <div className="lg:col-span-7 grid grid-cols-12 gap-4 relative">
-            <div className="col-span-12 lg:col-span-10 lg:col-start-3 shadow-2xl">
-              <img src={currentProperty.gallery[1]} alt="Estate View" className="w-full aspect-[4/5] object-cover" />
+          
+          <div className="lg:col-span-7 relative">
+            <div className="aspect-[16/9] overflow-hidden shadow-2xl scale-110 -rotate-2">
+              <img src={currentProperty.gallery[0]} className="w-full h-full object-cover" />
             </div>
-            <div className="hidden lg:block absolute -left-12 bottom-12 w-1/2 shadow-2xl">
-              <img src={currentProperty.gallery[2]} alt="Interior" className="w-full aspect-square object-cover" />
+            <div className="absolute -bottom-20 -right-20 w-1/2 aspect-square hidden lg:block shadow-3xl rotate-3 border-[15px] border-white">
+               <img src={currentProperty.gallery[2]} className="w-full h-full object-cover" />
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section className="relative py-48 bg-black text-white overflow-hidden">
-      <div className="absolute inset-0 opacity-30">
-         <img src={currentProperty.gallery[4]} className="w-full h-full object-cover" />
-      </div>
-      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-         <span className="text-[10px] uppercase tracking-[0.6em] mb-12 block text-white/50">Our Philosophy</span>
-         <h3 className="text-4xl md:text-6xl font-serif mb-12 italic">"{currentProperty.philosophy.quote}"</h3>
-         <p className="text-xl md:text-2xl font-light leading-relaxed max-w-2xl mx-auto">
-           {currentProperty.philosophy.description}
-         </p>
-         <div className="mt-16 text-[11px] uppercase tracking-[0.4em] font-bold text-gray-400">
-           — {currentProperty.philosophy.title}
-         </div>
-      </div>
-    </section>
-  </>
-);
+      {/* The Dwelling Portfolio (Asymmetric List) */}
+      <section className="py-48 px-6 lg:px-24 bg-gray-50/50">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-32 gap-8">
+            <div className="max-w-xl">
+              <span className="text-[9px] uppercase tracking-[0.8em] text-gray-400 mb-6 block">02 / Portfolio</span>
+              <h2 className="text-5xl md:text-7xl font-serif leading-none mb-8">Dwelling <br/><span className="italic">Collection</span></h2>
+            </div>
+            <p className="text-gray-400 max-w-xs text-sm font-light leading-relaxed">Each space is a frame for the landscape, designed with the rhythm of the valley in mind.</p>
+          </div>
+
+          <div className="space-y-px">
+            {currentProperty.roomTypes.map((type, idx) => (
+              <div 
+                key={type.name} 
+                className="group flex flex-col md:flex-row items-center justify-between py-12 border-b border-black/5 hover:px-8 transition-all duration-700 cursor-pointer"
+              >
+                 <div className="flex items-baseline space-x-12">
+                    <span className="text-sm font-light opacity-30 group-hover:opacity-100">{type.count}</span>
+                    <h3 className="text-3xl md:text-5xl font-serif font-light group-hover:italic transition-all">{type.name}</h3>
+                 </div>
+                 <div className="flex items-center space-x-8 mt-6 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="text-[10px] uppercase tracking-widest font-bold">Inquire More</span>
+                    <ChevronRight size={16} />
+                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* The Intangibles (Minimalist Floating Icons) */}
+      <section className="py-48 px-6 lg:px-24 bg-white overflow-hidden">
+        <div className="max-w-[1400px] mx-auto relative">
+          <div className="text-center mb-32">
+             <span className="text-[9px] uppercase tracking-[0.8em] text-gray-400 mb-6 block">03 / The Details</span>
+             <h2 className="text-5xl md:text-7xl font-serif mb-8">Elemental <br/><span className="italic">Comfort</span></h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-24 lg:gap-12 px-12">
+            {currentProperty.roomFeatures.map((feature, idx) => (
+              <div 
+                key={idx} 
+                className="flex flex-col items-center text-center space-y-12"
+              >
+                 <div className="p-8 border border-black/5 rounded-full hover:scale-110 hover:border-black/20 transition-all duration-700">
+                    {getIcon(feature.icon, currentTheme.iconAccent, 40)}
+                 </div>
+                 <div className="max-w-[180px]">
+                    <p className="text-[11px] uppercase tracking-[0.4em] leading-loose text-black/50 font-bold">
+                       {feature.label}
+                    </p>
+                 </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Magical Floating Element */}
+          <div className="absolute top-1/2 left-0 w-64 h-64 bg-gray-50 rounded-full blur-3xl -z-10 opacity-50" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-gray-50 rounded-full blur-3xl -z-10 opacity-50" />
+        </div>
+      </section>
+
+      {/* Curated Highlights (Editorial Grid) */}
+      <section className="py-48 px-6 lg:px-24 bg-[#0E0E0E] text-white overflow-hidden">
+        <div className="max-w-[1400px] mx-auto">
+           <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 mb-32 items-center">
+              <div>
+                <span className="text-[9px] uppercase tracking-[0.8em] text-white/40 mb-8 block">04 / Experiences</span>
+                <h2 className="text-5xl md:text-8xl font-serif leading-none mb-12 italic">Estate <br/>Curations</h2>
+                <p className="text-white/40 max-w-sm text-sm font-light leading-loose">The estate lives through its small moments. Private garden sanctuaries and misty mornings that defy explanation.</p>
+              </div>
+              <div className="aspect-[4/5] overflow-hidden scale-90 rotate-2">
+                 <img src={currentProperty.highlights[0].image} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" />
+              </div>
+           </div>
+           
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:px-24">
+              {currentProperty.highlights.slice(1).map((h, idx) => (
+                <div key={idx} className="group cursor-pointer">
+                   <div className="aspect-[16/9] overflow-hidden mb-8 relative">
+                      <img src={h.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm">
+                         <span className="text-[10px] uppercase tracking-[0.5em] font-bold">Discover</span>
+                      </div>
+                   </div>
+                   <h4 className="text-2xl font-serif italic mb-2">{h.title}</h4>
+                   <div className="w-12 h-[1px] bg-white/20 group-hover:w-full transition-all duration-700" />
+                </div>
+              ))}
+           </div>
+        </div>
+      </section>
+
+      {/* The Location Portal (Postcard Design) */}
+      <section className="py-48 px-6 lg:px-24 bg-white relative">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-24 items-center">
+             <div className="lg:col-span-4 order-2 lg:order-1">
+                <span className="text-[9px] uppercase tracking-[0.8em] text-gray-400 mb-8 block">05 / Location</span>
+                <h2 className="text-5xl font-serif leading-tight mb-12">Arriving at <br/><span className="italic">{currentProperty.name}</span></h2>
+                
+                <div className="space-y-12">
+                   {currentProperty.travelInfo.map((info, idx) => (
+                     <div key={idx} className="flex space-x-8 group">
+                        <div className="mt-1 transition-transform group-hover:scale-110 duration-500" style={{ color: currentTheme.iconAccent }}>
+                          {getIcon(info.icon, 'currentColor', 28)}
+                        </div>
+                        <p className="text-gray-500 font-light text-sm leading-relaxed">
+                          {info.text}
+                        </p>
+                     </div>
+                   ))}
+                </div>
+
+                <div className="pt-16 mt-16 border-t border-black/5">
+                   <p className="text-[10px] uppercase tracking-widest font-bold text-gray-300 mb-4">Postcard</p>
+                   <p className="text-xl font-serif italic text-black/40">{currentProperty.address}</p>
+                </div>
+             </div>
+             
+             <div className="lg:col-span-8 order-1 lg:order-2">
+                <div className="aspect-video bg-gray-50 p-1 lg:p-4 border border-black/5 shadow-3xl overflow-hidden group">
+                   <div className="w-full h-full relative overflow-hidden">
+                      <img 
+                        src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&q=80&w=1200" 
+                        className="w-full h-full object-cover opacity-60 grayscale scale-110 group-hover:scale-100 group-hover:grayscale-0 transition-all duration-1000"
+                        alt="Wayanad Landscape"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                         <a 
+                          href={currentProperty.mapLink}
+                          target="_blank"
+                          className="bg-black text-white px-12 py-5 text-[9px] uppercase tracking-[0.5em] font-bold shadow-2xl hover:bg-white hover:text-black transition-all"
+                         >
+                           Open Live Map
+                         </a>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+};
 
 const ExperiencePage: React.FC<{ currentTheme: any }> = ({ currentTheme }) => (
-  <div className="pt-40 pb-32 px-6 lg:px-24 max-w-[1400px] mx-auto animate-in fade-in slide-in-from-bottom duration-700">
-    <div className="mb-24 text-center max-w-2xl mx-auto">
-      <span className="text-[10px] uppercase tracking-[0.6em] text-gray-400 mb-6 block">The Wayanad Way</span>
-      <h2 className="text-5xl lg:text-7xl font-serif mb-8 leading-tight">Beyond the <span className="italic">Balcony</span></h2>
-      <p className="text-lg text-gray-500 font-light leading-relaxed">Curated local experiences designed to immerse you in the heartbeat of the Western Ghats.</p>
+  <div className="pt-48 pb-32 px-6 lg:px-24 max-w-[1400px] mx-auto animate-in fade-in duration-1000">
+    <div className="mb-32 max-w-2xl">
+      <span className="text-[9px] uppercase tracking-[1em] text-gray-400 mb-8 block">The Wayanad Way</span>
+      <h2 className="text-6xl md:text-8xl font-serif mb-12 leading-tight">Beyond the <span className="italic">Walls</span></h2>
+      <p className="text-xl text-gray-500 font-light leading-relaxed">Curated local experiences designed to immerse you in the heartbeat of the Western Ghats.</p>
     </div>
-    <div className="space-y-40">
+    <div className="space-y-64">
       {WAYANAD_EXPERIENCES.map((exp, idx) => (
-        <div key={exp.title} className={`grid grid-cols-1 lg:grid-cols-2 gap-16 items-center ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}>
-          <div className={`space-y-8 ${idx % 2 !== 0 ? 'lg:order-2 lg:pl-20' : 'lg:pr-20'}`}>
-            <h3 className="text-4xl font-serif">{exp.title}</h3>
-            <p className="text-gray-600 font-light text-lg leading-loose">{exp.description}</p>
+        <div key={exp.title} className={`grid grid-cols-1 lg:grid-cols-2 gap-24 items-center ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}>
+          <div className={`space-y-12 ${idx % 2 !== 0 ? 'lg:pl-32' : 'lg:pr-32'}`}>
+            <h3 className="text-5xl font-serif italic">{exp.title}</h3>
+            <p className="text-gray-500 font-light text-xl leading-loose">{exp.description}</p>
+            <div className="w-24 h-[1px] bg-black/10" />
           </div>
-          <div className="aspect-[4/5] overflow-hidden shadow-2xl relative">
-            <img src={exp.image} alt={exp.title} className="w-full h-full object-cover" />
-            <div className="absolute top-8 right-8 bg-white/90 p-6 backdrop-blur-md">
-               {getIcon(exp.icon, currentTheme.primary)}
-            </div>
+          <div className="aspect-[4/5] overflow-hidden shadow-3xl relative group">
+            <img src={exp.image} alt={exp.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2s]" />
+            <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-all" />
           </div>
         </div>
       ))}
@@ -151,17 +287,21 @@ const ExperiencePage: React.FC<{ currentTheme: any }> = ({ currentTheme }) => (
 );
 
 const GalleryPage: React.FC<{ currentProperty: Property, setLightboxIndex: (i: number) => void }> = ({ currentProperty, setLightboxIndex }) => (
-  <div className="pt-40 pb-32 px-6 lg:px-24 max-w-[1400px] mx-auto animate-in fade-in slide-in-from-bottom duration-700">
-    <div className="mb-20">
-      <span className="text-[10px] uppercase tracking-[0.6em] text-gray-400 mb-4 block">Visual Story</span>
-      <h2 className="text-5xl font-serif">Wayanad <span className="italic">Captured</span></h2>
+  <div className="pt-48 pb-32 px-6 lg:px-24 max-w-[1400px] mx-auto animate-in fade-in duration-1000">
+    <div className="mb-32">
+      <span className="text-[9px] uppercase tracking-[1em] text-gray-400 mb-8 block">Visual Archive</span>
+      <h2 className="text-6xl md:text-8xl font-serif">A Moment <br/><span className="italic">Captured</span></h2>
     </div>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {currentProperty.gallery.map((img: string, idx: number) => (
-        <div key={idx} onClick={() => setLightboxIndex(idx)} className="relative group cursor-pointer overflow-hidden shadow-lg aspect-[4/5]">
+        <div 
+          key={idx} 
+          onClick={() => setLightboxIndex(idx)} 
+          className="relative group cursor-pointer overflow-hidden aspect-[4/5] shadow-sm hover:shadow-2xl transition-all duration-700"
+        >
            <img src={img} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
-           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
-              <span className="text-white text-[10px] uppercase tracking-widest font-bold">Expand View</span>
+           <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+              <Maximize className="text-white" size={32} strokeWidth={1} />
            </div>
         </div>
       ))}
@@ -170,32 +310,29 @@ const GalleryPage: React.FC<{ currentProperty: Property, setLightboxIndex: (i: n
 );
 
 const SustainabilityPage: React.FC<{ currentTheme: any }> = ({ currentTheme }) => (
-  <div className="pt-40 pb-32 px-6 lg:px-24 max-w-[1400px] mx-auto animate-in fade-in slide-in-from-bottom duration-700">
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-      <div className="lg:col-span-5 sticky top-40">
-        <span className="text-[10px] uppercase tracking-[0.6em] text-gray-400 mb-6 block">Our Earth</span>
-        <h2 className="text-5xl lg:text-7xl font-serif mb-8 leading-tight">Conservation <br/><span className="italic">& Community</span></h2>
-        <p className="text-lg text-gray-600 font-light leading-relaxed mb-12">
-          As stewards of the Nilgiri Biosphere, we believe luxury should leave no trace other than inspiration. Our commitment is to the land, the wildlife, and the people of Wayanad.
+  <div className="pt-48 pb-32 px-6 lg:px-24 max-w-[1400px] mx-auto animate-in fade-in duration-1000">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-32 items-start">
+      <div className="lg:col-span-5 sticky top-48">
+        <span className="text-[9px] uppercase tracking-[1em] text-gray-400 mb-8 block">Our Earth</span>
+        <h2 className="text-6xl md:text-8xl font-serif mb-12 leading-tight">Stewards <br/>of the <span className="italic">Land</span></h2>
+        <p className="text-xl text-gray-400 font-light leading-relaxed">
+          As stewards of the Nilgiri Biosphere, we believe luxury should leave no trace other than inspiration.
         </p>
       </div>
-      <div className="lg:col-span-7 space-y-24">
+      <div className="lg:col-span-7 space-y-48">
         {SUSTAINABILITY_PILLARS.map((pillar, idx) => (
           <div key={pillar.title} className="group">
-             <div className="flex items-center space-x-6 mb-8">
-                <div className="p-4 rounded-full border border-gray-100 group-hover:bg-black group-hover:text-white transition-all duration-500">
-                   {getIcon(pillar.icon, 'currentColor')}
+             <div className="flex items-center space-x-12 mb-12">
+                <div className="p-6 border border-black/5 group-hover:bg-black group-hover:text-white transition-all duration-700 rounded-full">
+                   {getIcon(pillar.icon, 'currentColor', 32)}
                 </div>
-                <h3 className="text-3xl font-serif">{pillar.title}</h3>
+                <h3 className="text-4xl font-serif">{pillar.title}</h3>
              </div>
-             <p className="text-xl font-light text-gray-500 leading-relaxed pl-20">
+             <p className="text-2xl font-light text-gray-400 leading-relaxed pl-24">
                {pillar.desc}
              </p>
           </div>
         ))}
-        <div className="pt-12 pl-20">
-          <img src="https://images.unsplash.com/photo-1444858291040-58f756a3bdd6?auto=format&fit=crop&q=80&w=1200" className="w-full aspect-video object-cover shadow-2xl" />
-        </div>
       </div>
     </div>
   </div>
@@ -207,90 +344,68 @@ const ContactPage: React.FC<{ currentTheme: any, currentProperty: Property }> = 
     window.open(`https://wa.me/918921142220?text=${encodeURIComponent(message)}`, '_blank');
   };
 
-  const inputClasses = "w-full bg-white text-black border-b border-gray-200 py-3 px-2 outline-none focus:border-black transition-all placeholder:text-gray-400 font-medium";
-  const labelClasses = "text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-2 block";
+  const inputClasses = "w-full bg-transparent text-black border-b border-black/5 py-4 px-2 outline-none focus:border-black transition-all placeholder:text-gray-300 font-light text-xl";
+  const labelClasses = "text-[9px] uppercase tracking-[0.6em] font-bold text-gray-400 mb-2 block";
 
   return (
-    <div className="pt-40 pb-32 px-6 lg:px-24 max-w-[1400px] mx-auto animate-in fade-in slide-in-from-bottom duration-700">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
-         <div>
-           <span className="text-[10px] uppercase tracking-[0.6em] text-gray-400 mb-6 block">Concierge</span>
-           <h2 className="text-6xl font-serif mb-12 leading-tight">Connect with <br/><span className="italic">{currentProperty.name}</span></h2>
+    <div className="pt-48 pb-32 px-6 lg:px-24 max-w-[1400px] mx-auto animate-in fade-in duration-1000">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-24 items-start">
+         <div className="lg:col-span-5">
+           <span className="text-[9px] uppercase tracking-[1em] text-gray-400 mb-8 block">Contact</span>
+           <h2 className="text-6xl md:text-8xl font-serif mb-16 leading-tight">Concierge <br/>& <span className="italic">Service</span></h2>
            
            <div className="space-y-16">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <div className="grid grid-cols-1 gap-12">
                  <div>
-                    <h4 className="text-[10px] uppercase tracking-widest font-bold mb-6 opacity-40">Direct Lines</h4>
-                    <div className="space-y-4">
-                      <a href={`tel:${CONTACT_INFO.phone}`} className="flex items-center space-x-4 group">
-                        <div className="p-2 border border-black/5 rounded-full group-hover:bg-black group-hover:text-white transition-all"><Phone size={14}/></div>
-                        <span className="text-lg font-light">{CONTACT_INFO.phone}</span>
+                    <h4 className="text-[9px] uppercase tracking-widest font-bold mb-8 opacity-30">The Network</h4>
+                    <div className="space-y-8">
+                      <a href={`tel:${CONTACT_INFO.phone}`} className="flex items-center space-x-6 group">
+                        <Phone size={18} className="text-gray-300" />
+                        <span className="text-2xl font-light">{CONTACT_INFO.phone}</span>
                       </a>
-                      <a href={`mailto:${CONTACT_INFO.email}`} className="flex items-center space-x-4 group">
-                        <div className="p-2 border border-black/5 rounded-full group-hover:bg-black group-hover:text-white transition-all"><Mail size={14}/></div>
-                        <span className="text-lg font-light">{CONTACT_INFO.email}</span>
+                      <a href={`mailto:${CONTACT_INFO.email}`} className="flex items-center space-x-6 group">
+                        <Mail size={18} className="text-gray-300" />
+                        <span className="text-2xl font-light">{CONTACT_INFO.email}</span>
                       </a>
                     </div>
                  </div>
-                 <div>
-                    <h4 className="text-[10px] uppercase tracking-widest font-bold mb-6 opacity-40">Instant Chat</h4>
+                 <div className="pt-12 border-t border-black/5">
                     <button 
                       onClick={handleWhatsAppChat}
-                      className="flex items-center space-x-4 group bg-black/5 hover:bg-black hover:text-white p-4 rounded-lg transition-all w-full"
+                      className="group flex items-center space-x-8"
                     >
-                      <MessageCircle size={20} className="text-green-600 group-hover:text-white"/>
+                      <MessageCircle size={32} className="text-gray-200 group-hover:text-green-500 transition-colors" />
                       <div className="text-left">
-                        <p className="text-[10px] uppercase tracking-widest font-bold">WhatsApp</p>
-                        <p className="text-sm font-light opacity-60">Chat with Concierge</p>
+                        <p className="text-[10px] uppercase tracking-[0.6em] font-bold text-gray-400">WhatsApp</p>
+                        <p className="text-2xl font-serif italic">Live Concierge Chat</p>
                       </div>
                     </button>
-                 </div>
-              </div>
-
-              <div className="pt-12 border-t border-gray-100">
-                 <h4 className="text-[10px] uppercase tracking-widest font-bold mb-6 opacity-40">Location & Directions</h4>
-                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
-                    <div className="max-w-xs">
-                      <p className="text-lg font-serif italic mb-2">{currentProperty.name}</p>
-                      <p className="text-sm font-light leading-relaxed text-gray-500">{currentProperty.address}</p>
-                    </div>
-                    <a 
-                      href={currentProperty.mapLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center space-x-4 text-[10px] uppercase tracking-[0.3em] font-bold border-b-2 pb-1 hover:border-black transition-all"
-                      style={{ borderBottomColor: currentTheme.primary }}
-                    >
-                      <MapPin size={14} />
-                      <span>Open Google Maps</span>
-                    </a>
                  </div>
               </div>
            </div>
          </div>
 
-         <div className="bg-white p-12 shadow-2xl border-t-8" style={{ borderColor: currentTheme.primary }}>
-            <h4 className="text-[10px] uppercase tracking-widest font-bold mb-10 text-gray-400">General Inquiry Form</h4>
-            <form className="space-y-10">
-               <div className="space-y-2">
-                  <label className={labelClasses}>Full Name</label>
-                  <input type="text" className={inputClasses} placeholder=" Julian Smith" />
+         <div className="lg:col-span-7 bg-white p-16 lg:p-24 shadow-3xl border border-black/5">
+            <h4 className="text-[9px] uppercase tracking-[0.8em] font-bold mb-16 text-gray-300">Inquiry Dispatch</h4>
+            <form className="space-y-16">
+               <div className="space-y-4">
+                  <label className={labelClasses}>Personal Identifier</label>
+                  <input type="text" className={inputClasses} placeholder="Julian Smith" />
                </div>
-               <div className="space-y-2">
-                  <label className={labelClasses}>Subject</label>
+               <div className="space-y-4">
+                  <label className={labelClasses}>Inquiry Mode</label>
                   <select className={inputClasses}>
-                    <option className="text-black">Stay Inquiry</option>
-                    <option className="text-black">Wedding & Events</option>
-                    <option className="text-black">Corporate Retreat</option>
-                    <option className="text-black">Media & PR</option>
+                    <option>Private Stay</option>
+                    <option>Events & Gatherings</option>
+                    <option>Press Inquiry</option>
                   </select>
                </div>
-               <div className="space-y-2">
-                  <label className={labelClasses}>Message</label>
-                  <textarea className={inputClasses} rows={4} placeholder="How can we help?"></textarea>
+               <div className="space-y-4">
+                  <label className={labelClasses}>Observations</label>
+                  <textarea className={inputClasses} rows={3} placeholder="Tell us about your requirements..."></textarea>
                </div>
-               <button className="w-full py-6 text-[10px] uppercase tracking-[0.4em] font-bold text-white transition-all shadow-xl hover:brightness-110" style={{ backgroundColor: currentTheme.primary }}>
-                 Send Inquiry
+               <button className="w-full py-8 text-[10px] uppercase tracking-[0.8em] font-bold text-white bg-black transition-all shadow-2xl hover:bg-white hover:text-black hover:border border-black">
+                 Send Invitation
                </button>
             </form>
          </div>
@@ -337,7 +452,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className={`transition-opacity duration-700 min-h-screen ${isLoaded ? 'opacity-100' : 'opacity-0'}`} style={{ color: currentTheme.textDark }}>
+    <div className={`transition-opacity duration-1000 min-h-screen ${isLoaded ? 'opacity-100' : 'opacity-0'}`} style={{ color: currentTheme.textDark }}>
       <Navbar 
         mode={mode} 
         activePage={activePage}
@@ -355,21 +470,18 @@ const App: React.FC = () => {
               currentProperty={currentProperty} 
               currentTheme={currentTheme} 
               setIsBookingOpen={setIsBookingOpen}
-              setLightboxIndex={setLightboxIndex}
               handleModeSwitch={handleModeSwitch}
             />
-            <div className="py-24 px-8 border-t border-gray-100 bg-white/50">
-               <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
-                  <div>
-                     <span className="text-[10px] uppercase tracking-[0.4em] text-gray-400 mb-2 block">Our Dwellings</span>
-                     <div className="flex space-x-8">
-                        <button onClick={() => handleModeSwitch('VILLA')} className={`text-2xl font-serif italic transition-all ${mode === 'VILLA' ? 'text-black underline' : 'opacity-30 hover:opacity-100'}`}>The Villa</button>
-                        <button onClick={() => handleModeSwitch('VIEW')} className={`text-2xl font-serif italic transition-all ${mode === 'VIEW' ? 'text-black underline' : 'opacity-30 hover:opacity-100'}`}>The View</button>
-                     </div>
+            <div className="py-32 px-12 bg-white flex flex-col items-center">
+               <div className="w-[1px] h-32 bg-black/5 mb-16" />
+               <div className="max-w-[1400px] w-full flex flex-col md:flex-row justify-between items-center gap-12">
+                  <div className="flex space-x-12">
+                    <button onClick={() => handleModeSwitch('VILLA')} className={`text-3xl font-serif italic transition-all ${mode === 'VILLA' ? 'text-black underline' : 'opacity-20 hover:opacity-100'}`}>The Villa</button>
+                    <button onClick={() => handleModeSwitch('VIEW')} className={`text-3xl font-serif italic transition-all ${mode === 'VIEW' ? 'text-black underline' : 'opacity-20 hover:opacity-100'}`}>The View</button>
                   </div>
-                  <div className="flex space-x-6">
-                    <a href="#" className="hover:opacity-40 transition-opacity"><Instagram size={20}/></a>
-                    <a href="#" className="hover:opacity-40 transition-opacity"><Youtube size={20}/></a>
+                  <div className="flex space-x-12 items-center opacity-30">
+                    <a href="#" className="hover:opacity-100 transition-opacity"><Instagram size={24} strokeWidth={1} /></a>
+                    <a href="#" className="hover:opacity-100 transition-opacity"><Youtube size={24} strokeWidth={1} /></a>
                   </div>
                </div>
             </div>
@@ -382,22 +494,25 @@ const App: React.FC = () => {
       </main>
 
       {activePage !== 'home' && (
-        <footer className="py-24 px-6 bg-[#0E0E0E] text-white">
+        <footer className="py-48 px-12 bg-white text-black border-t border-black/5">
           <div className="max-w-[1400px] mx-auto text-center">
-             <h2 className="text-3xl font-serif mb-8 italic">Coffee Bloom Estates</h2>
-             <div className="flex justify-center space-x-12 text-[10px] uppercase tracking-[0.5em] text-white/40 mb-12">
+             <h2 className="text-4xl font-serif mb-12 italic tracking-tighter">Coffee Bloom Estates</h2>
+             <div className="flex justify-center space-x-16 text-[10px] uppercase tracking-[0.8em] text-black/40 mb-20">
                 <button onClick={() => handleNavigate('home')}>Home</button>
-                <button onClick={() => handleNavigate('contact')}>Contact</button>
+                <button onClick={() => handleNavigate('experience')}>Archive</button>
+                <button onClick={() => handleNavigate('contact')}>Connect</button>
              </div>
-             <p className="text-[9px] uppercase tracking-[0.4em] text-white/20">&copy; 2025 C.B.E Wayanad</p>
+             <p className="text-[9px] uppercase tracking-[0.5em] text-black/20">&copy; 2025 Coffee Bloom Estates — Vaduvanchal Highlands</p>
           </div>
         </footer>
       )}
 
       {lightboxIndex !== null && (
-        <div className="fixed inset-0 z-[200] bg-[#0E0E0E] flex items-center justify-center p-4 backdrop-blur-md">
-          <button onClick={() => setLightboxIndex(null)} className="absolute top-10 right-10 text-white/40 hover:text-white"><X size={40} /></button>
-          <img src={currentProperty.gallery[lightboxIndex]} className="max-w-full max-h-[85vh] object-contain shadow-2xl animate-in zoom-in duration-500" />
+        <div className="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center p-8 backdrop-blur-2xl">
+          <button onClick={() => setLightboxIndex(null)} className="absolute top-12 right-12 text-white/40 hover:text-white transition-colors">
+            <X size={48} strokeWidth={1} />
+          </button>
+          <img src={currentProperty.gallery[lightboxIndex]} className="max-w-full max-h-[85vh] object-contain shadow-3xl animate-in zoom-in duration-700" />
         </div>
       )}
 
