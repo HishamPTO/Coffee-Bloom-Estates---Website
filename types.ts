@@ -27,6 +27,11 @@ export interface Philosophy {
   description: string;
 }
 
+export interface OnSiteExperience {
+  label: string;
+  icon: string;
+}
+
 export interface Property {
   name: string;
   location: string;
@@ -43,6 +48,7 @@ export interface Property {
   philosophy: Philosophy;
   address: string;
   mapLink: string;
+  onSiteExperiences: OnSiteExperience[];
   travelInfo: {
     icon: 'Plane' | 'Train';
     text: string;

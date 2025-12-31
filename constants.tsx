@@ -31,13 +31,19 @@ import {
   Wind as WindIcon,
   Sun,
   Maximize,
-  Heart
+  Heart,
+  Bike,
+  Dices,
+  Trophy,
+  Tent,
+  Binoculars,
+  Droplets
 } from 'lucide-react';
 import { Property, ThemeColors } from './types';
 
 export const COLORS_VILLA: ThemeColors = {
-  primary: '#1A1A1A', // Sharp Black for high contrast
-  accent: '#A69279',  // Sophisticated Gold/Taupe
+  primary: '#1A1A1A',
+  accent: '#A69279',
   background: '#FFFFFF', 
   textDark: '#111111',
   textLight: '#7A7A7A',
@@ -46,8 +52,8 @@ export const COLORS_VILLA: ThemeColors = {
 };
 
 export const COLORS_VIEW: ThemeColors = {
-  primary: '#1A2A20', // Deep Forest
-  accent: '#94A398',  // Soft Moss
+  primary: '#1A2A20',
+  accent: '#94A398',
   background: '#F8F9F8', 
   textDark: '#121212',
   textLight: '#6B7A6F',
@@ -74,6 +80,18 @@ export const PROPERTY_VILLA: Property = {
     { count: '04', name: 'Garden Rooms' },
     { count: '05', name: 'Cloud View Suites' },
     { count: '02', name: 'The Estate Signature' },
+  ],
+  onSiteExperiences: [
+    { label: 'Estate Trekking', icon: 'Compass' },
+    { label: 'Natural Pond', icon: 'Droplets' },
+    { label: 'Coffee Bean Harvesting', icon: 'Coffee' },
+    { label: 'Outdoor Camping & Campfire', icon: 'Tent' },
+    { label: 'Private Barbeque', icon: 'Utensils' },
+    { label: 'Estate Cycling', icon: 'Bike' },
+    { label: 'Badminton Courts', icon: 'Trophy' },
+    { label: 'Classic Board Games', icon: 'Dices' },
+    { label: 'Private Swimming Pool', icon: 'Waves' },
+    { label: 'The Rose Garden', icon: 'Sparkles' },
   ],
   roomFeatures: [
     { icon: 'Bed', label: '800-Thread Count Egyptian Linen' },
@@ -122,6 +140,16 @@ export const PROPERTY_VIEW: Property = {
   roomTypes: [
     { count: '08', name: 'Valley View Dwellings' },
     { count: '04', name: 'Terrace Sanctuary' },
+  ],
+  onSiteExperiences: [
+    { label: 'Estate Trekking', icon: 'Compass' },
+    { label: 'Natural Pond', icon: 'Droplets' },
+    { label: 'Coffee Bean Harvesting', icon: 'Coffee' },
+    { label: 'Outdoor Camping & Campfire', icon: 'Tent' },
+    { label: 'Barbeque Request', icon: 'Utensils' },
+    { label: 'Valley Cycling', icon: 'Bike' },
+    { label: 'Classic Board Games', icon: 'Dices' },
+    { label: 'Hill View Observation Deck', icon: 'Binoculars' },
   ],
   roomFeatures: [
     { icon: 'Wifi', label: 'High-speed Fiber Uplink' },
@@ -201,7 +229,7 @@ export const SUSTAINABILITY_PILLARS = [
 ];
 
 export const getIcon = (iconName: string, color: string, size: number = 20) => {
-  const props = { size, strokeWidth: 1.0, color }; // Ultra-thin stroke for luxury
+  const props = { size, strokeWidth: 1.0, color };
   switch (iconName) {
     case 'Waves': return <Waves {...props} />;
     case 'Bed': return <Bed {...props} />;
@@ -232,6 +260,12 @@ export const getIcon = (iconName: string, color: string, size: number = 20) => {
     case 'Sun': return <Sun {...props} />;
     case 'Heart': return <Heart {...props} />;
     case 'Maximize': return <Maximize {...props} />;
+    case 'Bike': return <Bike {...props} />;
+    case 'Dices': return <Dices {...props} />;
+    case 'Trophy': return <Trophy {...props} />;
+    case 'Tent': return <Tent {...props} />;
+    case 'Binoculars': return <Binoculars {...props} />;
+    case 'Droplets': return <Droplets {...props} />;
     default: return <CheckCircle {...props} />;
   }
 };

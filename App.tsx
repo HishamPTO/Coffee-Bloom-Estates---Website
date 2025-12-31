@@ -261,27 +261,56 @@ const HomePage: React.FC<{
   );
 };
 
-const ExperiencePage: React.FC<{ currentTheme: any }> = ({ currentTheme }) => (
-  <div className="pt-48 pb-32 px-6 lg:px-24 max-w-[1400px] mx-auto animate-in fade-in duration-1000">
-    <div className="mb-32 max-w-2xl">
-      <span className="text-[9px] uppercase tracking-[1em] text-gray-400 mb-8 block">The Wayanad Way</span>
-      <h2 className="text-6xl md:text-8xl font-serif mb-12 leading-tight">Beyond the <span className="italic">Walls</span></h2>
-      <p className="text-xl text-gray-500 font-light leading-relaxed">Curated local experiences designed to immerse you in the heartbeat of the Western Ghats.</p>
+const ExperiencePage: React.FC<{ currentTheme: any, currentProperty: Property }> = ({ currentTheme, currentProperty }) => (
+  <div className="pt-48 pb-32 animate-in fade-in duration-1000">
+    {/* On-Site Pursuits Section */}
+    <div className="px-6 lg:px-24 max-w-[1400px] mx-auto mb-64">
+      <div className="mb-32 max-w-2xl">
+        <span className="text-[9px] uppercase tracking-[1em] text-gray-400 mb-8 block">01 / Curated On-Site</span>
+        <h2 className="text-6xl md:text-8xl font-serif mb-12 leading-tight">Estate <br/><span className="italic">Pursuits</span></h2>
+        <p className="text-xl text-gray-500 font-light leading-relaxed">Immerse yourself in the unique rhythm of {currentProperty.name}. Every moment is an invitation to reconnect.</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-24 gap-x-12">
+        {currentProperty.onSiteExperiences.map((item, idx) => (
+          <div key={idx} className="group flex items-start space-x-10 p-6 border-b border-black/5 hover:border-black transition-all duration-700">
+            <div className="mt-1 transition-transform duration-500 group-hover:-translate-y-2" style={{ color: currentTheme.iconAccent }}>
+               {getIcon(item.icon, 'currentColor', 32)}
+            </div>
+            <div>
+              <h4 className="text-xl font-serif mb-2">{item.label}</h4>
+              <p className="text-[9px] uppercase tracking-widest text-gray-400 font-bold opacity-60">Exclusive to {currentProperty.name}</p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
-    <div className="space-y-64">
-      {WAYANAD_EXPERIENCES.map((exp, idx) => (
-        <div key={exp.title} className={`grid grid-cols-1 lg:grid-cols-2 gap-24 items-center ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}>
-          <div className={`space-y-12 ${idx % 2 !== 0 ? 'lg:pl-32' : 'lg:pr-32'}`}>
-            <h3 className="text-5xl font-serif italic">{exp.title}</h3>
-            <p className="text-gray-500 font-light text-xl leading-loose">{exp.description}</p>
-            <div className="w-24 h-[1px] bg-black/10" />
+
+    {/* Regional Explorations Section (Beyond the Walls) */}
+    <div className="px-6 lg:px-24 max-w-[1400px] mx-auto">
+      <div className="mb-32 max-w-2xl text-right ml-auto">
+        <span className="text-[9px] uppercase tracking-[1em] text-gray-400 mb-8 block text-right">02 / Beyond the Walls</span>
+        <h2 className="text-6xl md:text-8xl font-serif mb-12 leading-tight">Wayanad <br/><span className="italic">Odyssey</span></h2>
+        <p className="text-xl text-gray-500 font-light leading-relaxed text-right">Step outside our sanctuary to discover the untamed beauty and ancient heritage of the Western Ghats.</p>
+      </div>
+      <div className="space-y-64">
+        {WAYANAD_EXPERIENCES.map((exp, idx) => (
+          <div key={exp.title} className={`grid grid-cols-1 lg:grid-cols-2 gap-24 items-center ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}>
+            <div className={`space-y-12 ${idx % 2 !== 0 ? 'lg:pl-32' : 'lg:pr-32'}`}>
+              <h3 className="text-5xl font-serif italic">{exp.title}</h3>
+              <p className="text-gray-500 font-light text-xl leading-loose">{exp.description}</p>
+              <div className="w-24 h-[1px] bg-black/10" />
+            </div>
+            <div className="aspect-[4/5] overflow-hidden shadow-3xl relative group">
+              <img src={exp.image} alt={exp.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2s]" />
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-all" />
+              <div className="absolute top-12 right-12 bg-white/90 p-6 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity">
+                 {getIcon(exp.icon, currentTheme.primary, 24)}
+              </div>
+            </div>
           </div>
-          <div className="aspect-[4/5] overflow-hidden shadow-3xl relative group">
-            <img src={exp.image} alt={exp.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2s]" />
-            <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-all" />
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   </div>
 );
@@ -487,7 +516,7 @@ const App: React.FC = () => {
             </div>
           </>
         )}
-        {activePage === 'experience' && <ExperiencePage currentTheme={currentTheme} />}
+        {activePage === 'experience' && <ExperiencePage currentTheme={currentTheme} currentProperty={currentProperty} />}
         {activePage === 'gallery' && <GalleryPage currentProperty={currentProperty} setLightboxIndex={setLightboxIndex} />}
         {activePage === 'sustainability' && <SustainabilityPage currentTheme={currentTheme} />}
         {activePage === 'contact' && <ContactPage currentTheme={currentTheme} currentProperty={currentProperty} />}
